@@ -15,127 +15,94 @@ constant BP_RS1_END: integer := 19;
 constant BP_FUNCT7_BEGIN: integer := 25;
 constant BP_FUNCT7_END: integer := 31;
 
+constant BP_FUNCT6_BEGIN: integer := 26;
+constant BP_FUNCT6_END: integer := 31;
+
 constant BP_FUNCT3_BEGIN: integer := 12;
 constant BP_FUNCT3_END: integer := 14;
 
 constant BP_RD_BEGIN: integer := 7;
 constant BP_RD_END: integer := 11;
 
-constant BP_I_IMM_11_0_BEGIN: integer := 20;
-constant BP_I_IMM_11_0_END: integer := 31;
+constant BP_SHAMT_BEGIN: integer := 20;
+constant BP_SHAMT_END: integer := 24;
 
-constant BP_I_IMM_11_5_BEGIN: integer := 25;
-constant BP_I_IMM_11_5_END: integer := 31;
+constant BP_SHAMTW_BEGIN: integer := 20;
+constant BP_SHAMTW_END: integer := 23;
 
-constant BP_I_IMM_11_4_BEGIN: integer := 24;
-constant BP_I_IMM_11_4_END: integer := 31;
+constant BP_IMM_11_0_BEGIN: integer := 20;
+constant BP_IMM_11_0_END: integer := 31;
 
-constant BP_I_SHAMT_BEGIN: integer := 20;
-constant BP_I_SHAMT_0_END: integer := 24;
-
-constant BP_I_SHAMTW_BEGIN: integer := 20;
-constant BP_I_SHAMTW_0_END: integer := 23;
-
-constant BP_S_IMM_11_5_BEGIN: integer := 25;
-constant BP_S_IMM_11_5_END: integer := 31;
-
-constant BP_S_IMM_4_0_BEGIN: integer := 7;
-constant BP_S_IMM_4_0_END: integer := 11;
-
-constant BP_B_IMM_12: integer := 31;
-
-constant BP_B_IMM_10_5_BEGIN: integer := 25;
-constant BP_B_IMM_10_5_END: integer := 30;
-
-constant BP_B_IMM_4_1_BEGIN: integer := 8;
-constant BP_B_IMM_4_1_END: integer := 11;
-
-constant BP_B_IMM_11: integer := 7;
-
-constant BP_U_IMM_31_12_BEGIN: integer := 12;
-constant BP_U_IMM_31_12_END: integer := 31;
-
-constant BP_J_IMM_20: integer := 31;
-
-constant BP_J_IMM_10_1_BEGIN: integer := 21;
-constant BP_J_IMM_10_1_END: integer := 30;
-
-constant BP_J_IMM_11: integer := 20;
-
-constant BP_J_IMM_19_12_BEGIN: integer := 12;
-constant BP_J_IMM_19_12_END: integer := 19;
-
+constant BP_IMM_31_12_BEGIN: integer := 12;
+constant BP_IMM_31_12_END: integer := 31;
 
 
 
 
 
 -- Instructions
-constant INSTRUCTION_NOP:     integer := ;  -- No-op
+constant INSTRUCTION_NOP:     integer := 0;   -- No-OP
 -- RV-321
-constant INSTRUCTION_LUI:     integer := ;  -- Load Upper Immediate
-constant INSTRUCTION_AUIPC:   integer := ;  -- Add Upper Immediate to PC
-constant INSTRUCTION_JAL:     integer := ;  -- Jump And Link
-constant INSTRUCTION_JALR:    integer := ;  -- Jump And Link Register
-constant INSTRUCTION_BEQ:     integer := ;  --
-constant INSTRUCTION_BNE:     integer := ;  --
-constant INSTRUCTION_BLT:     integer := ;  --
-constant INSTRUCTION_BGE:     integer := ;  --
-constant INSTRUCTION_BLTU:    integer := ;  --
-constant INSTRUCTION_BGEU:    integer := ;  --
-constant INSTRUCTION_LB:      integer := ; --
-constant INSTRUCTION_LH:      integer := ; --
-constant INSTRUCTION_LW:      integer := ; --
-constant INSTRUCTION_LBU:     integer := ; --
-constant INSTRUCTION_LHU:     integer := ; --
-constant INSTRUCTION_SB:      integer := ; --
-constant INSTRUCTION_SH:      integer := ; --
-constant INSTRUCTION_SW:      integer := ; --
-constant INSTRUCTION_ADDI:    integer := ; --
-constant INSTRUCTION_SLTI:    integer := ; --
-constant INSTRUCTION_SLTIU:   integer := ; --
-constant INSTRUCTION_XORI:    integer := ; --
-constant INSTRUCTION_ORI:     integer := ; --
-constant INSTRUCTION_ANDI:    integer := ; --
-constant INSTRUCTION_SLLI:    integer := ; --
-constant INSTRUCTION_SRLI:    integer := ; --
-constant INSTRUCTION_SRAI:    integer := ; --
-constant INSTRUCTION_ADD:     integer := ; --
-constant INSTRUCTION_SUB:     integer := ; --
-constant INSTRUCTION_SLL:     integer := ; --
-constant INSTRUCTION_SLT:     integer := ; --
-constant INSTRUCTION_SLTU:    integer := ; --
-constant INSTRUCTION_XOR:     integer := ; --
-constant INSTRUCTION_SRL:     integer := ; --
-constant INSTRUCTION_SRA:     integer := ; --
-constant INSTRUCTION_OR:      integer := ; --
-constant INSTRUCTION_AND:     integer := ; --
-constant INSTRUCTION_FENCE:   integer := ; -- Fence Memory and I/O
-constant INSTRUCTION_FENCE_I: integer := ; -- Fence Instruction Stream
-constant INSTRUCTION_ECALL:   integer := ; --
-constant INSTRUCTION_EBREAK:  integer := ; --
-constant INSTRUCTION_CSRRW:   integer := ; --
-constant INSTRUCTION_CSRRS:   integer := ; --
-constant INSTRUCTION_CSRRC:   integer := ; --
-constant INSTRUCTION_CSRRWI:  integer := ; --
-constant INSTRUCTION_CSRRSI:  integer := ; --
-constant INSTRUCTION_CSRRCI:  integer := ; --
+constant INSTRUCTION_LUI:     integer := 1;   -- Load Upper Immediate
+constant INSTRUCTION_AUIPC:   integer := 2;   -- Add Upper Immediate to PC
+constant INSTRUCTION_JAL:     integer := 3;   -- Jump And Link
+constant INSTRUCTION_JALR:    integer := 4;   -- Jump And Link Register
+constant INSTRUCTION_BEQ:     integer := 5;   -- Branch if Equal
+constant INSTRUCTION_BNE:     integer := 6;   --
+constant INSTRUCTION_BLT:     integer := 7;   --
+constant INSTRUCTION_BGE:     integer := 8;   --
+constant INSTRUCTION_BLTU:    integer := 9;   --
+constant INSTRUCTION_BGEU:    integer := 10;  --
+constant INSTRUCTION_LB:      integer := 11; --
+constant INSTRUCTION_LH:      integer := 12; --
+constant INSTRUCTION_LW:      integer := 13; --
+constant INSTRUCTION_LBU:     integer := 14; --
+constant INSTRUCTION_LHU:     integer := 15; --
+constant INSTRUCTION_SB:      integer := 16; --
+constant INSTRUCTION_SH:      integer := 17; --
+constant INSTRUCTION_SW:      integer := 18; --
+constant INSTRUCTION_ADDI:    integer := 19; --
+constant INSTRUCTION_SLTI:    integer := 20; --
+constant INSTRUCTION_SLTIU:   integer := 21; --
+constant INSTRUCTION_XORI:    integer := 22; --
+constant INSTRUCTION_ORI:     integer := 23; --
+constant INSTRUCTION_ANDI:    integer := 24; --
+constant INSTRUCTION_SLLI:    integer := 25; --
+constant INSTRUCTION_SRLI:    integer := 26; --
+constant INSTRUCTION_SRAI:    integer := 27; --
+constant INSTRUCTION_ADD:     integer := 28; --
+constant INSTRUCTION_SUB:     integer := 29; --
+constant INSTRUCTION_SLL:     integer := 30; --
+constant INSTRUCTION_SLT:     integer := 31; --
+constant INSTRUCTION_SLTU:    integer := 32; --
+constant INSTRUCTION_XOR:     integer := 33; --
+constant INSTRUCTION_SRL:     integer := 34; --
+constant INSTRUCTION_SRA:     integer := 35; --
+constant INSTRUCTION_OR:      integer := 36; --
+constant INSTRUCTION_AND:     integer := 37; --
+constant INSTRUCTION_FENCE:   integer := 38; -- Fence Memory and I/O
+constant INSTRUCTION_FENCE_I: integer := 39; -- Fence Instruction Stream
+constant INSTRUCTION_ECALL:   integer := 40; --
+constant INSTRUCTION_EBREAK:  integer := 41; --
+constant INSTRUCTION_CSRRW:   integer := 42; --
+constant INSTRUCTION_CSRRS:   integer := 43; --
+constant INSTRUCTION_CSRRC:   integer := 44; --
+constant INSTRUCTION_CSRRWI:  integer := 45; --
+constant INSTRUCTION_CSRRSI:  integer := 46; --
+constant INSTRUCTION_CSRRCI:  integer := 47; --
 -- RV-64I
-constant INSTRUCTION_LWU:     integer := ; --
-constant INSTRUCTION_LD:      integer := ; --
-constant INSTRUCTION_SD:      integer := ; --
-constant INSTRUCTION_SLLI:    integer := ; --
-constant INSTRUCTION_SRLI:    integer := ; --
-constant INSTRUCTION_SRAI:    integer := ; --
-constant INSTRUCTION_ADDIW:   integer := ; --
-constant INSTRUCTION_SLLIW:   integer := ; --
-constant INSTRUCTION_SRLIW:   integer := ; --
-constant INSTRUCTION_SRAIW:   integer := ; --
-constant INSTRUCTION_ADDW:    integer := ; --
-constant INSTRUCTION_SUBW:    integer := ; --
-constant INSTRUCTION_SLLW:    integer := ; --
-constant INSTRUCTION_SRLW:    integer := ; --
-constant INSTRUCTION_SRAW:    integer := ; --
+constant INSTRUCTION_LWU:     integer := 48; --
+constant INSTRUCTION_LD:      integer := 49; --
+constant INSTRUCTION_SD:      integer := 50; --
+constant INSTRUCTION_ADDIW:   integer := 51; --
+constant INSTRUCTION_SLLIW:   integer := 52; --
+constant INSTRUCTION_SRLIW:   integer := 53; --
+constant INSTRUCTION_SRAIW:   integer := 54; --
+constant INSTRUCTION_ADDW:    integer := 55; --
+constant INSTRUCTION_SUBW:    integer := 56; --
+constant INSTRUCTION_SLLW:    integer := 57; --
+constant INSTRUCTION_SRLW:    integer := 58; --
+constant INSTRUCTION_SRAW:    integer := 59; --
 
 
 
@@ -153,74 +120,6 @@ constant OPCODE_FENCE: std_logic_vector(6 downto 0) := "0001111";
 constant OPCODE_CONTROLL: std_logic_vector(6 downto 0) := "1110011";
 constant OPCODE_ARITHMETIC_3: std_logic_vector(6 downto 0) := "0011011";
 constant OPCODE_ARITHMETIC_4: std_logic_vector(6 downto 0) := "0111011";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-constant OPCODE_: std_logic_vector(6 downto 0) := "";
-
-
-
-
-
-
-
-
-
-constant OPCODE_ALU: std_logic_vector(6 downto 0) :=    "0110011";
-constant OPCODE_ADDI: std_logic_vector(6 downto 0):=    "0010011";
-constant OPCODE_ADDIW: std_logic_vector(6 downto 0):=   "0011011";
-constant OPCODE_ADDW: std_logic_vector(6 downto 0):=    "0111011";
-constant OPCODE_AMO: std_logic_vector(6 downto 0):=     "0101111";
 
 
 
@@ -235,24 +134,26 @@ constant OPCODE_AMO: std_logic_vector(6 downto 0):=     "0101111";
 
 
 
--- Condition flags
-constant COND_ALW: std_logic_vector(3 downto 0):= "0000";
-constant COND_EQ : std_logic_vector(3 downto 0):= "0001";
-constant COND_NEQ: std_logic_vector(3 downto 0):= "0010";
-constant COND_GT : std_logic_vector(3 downto 0):= "0011";
-constant COND_GEQ: std_logic_vector(3 downto 0):= "0100";
-constant COND_LT : std_logic_vector(3 downto 0):= "0101";
-constant COND_LEQ: std_logic_vector(3 downto 0):= "1010";
 
--- Status bits
-constant STATUS_EQ: integer := 0;
-constant STATUS_GT: integer := 1;
-constant STATUS_LT: integer := 2;
+
 
 
 -- Memory mappings
-constant MEM_RAM_END: integer := 65535;
-constant MEM_PROGRAM_START: integer := 0;
+constant MEM_MEM_BEGIN: integer := 0;
+constant MEM_MEM_END: integer := 65535;
+
+constant MEM_IO_BEGIN: integer := 0;
+constant MEM_IO_END: integer := 65535;
+
+constant MEM_UART_BEGIN: integer := 0;
+constant MEM_UART_END: integer := 65535;
+
+
+
+
+
+
+
 
 constant MEM_UART_DATA: integer := 65536;
 constant MEM_UART_STATUS: integer := 65537;

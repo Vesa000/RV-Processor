@@ -6,9 +6,9 @@ entity ProgramCounter is Port (
 		I_clk : in STD_LOGIC;
 		I_reset : in STD_LOGIC;
 
+		I_pausePC: in STD_LOGIC;
 		I_setPC : in STD_LOGIC;
-		I_newPC : in
-		I_pausePC
+		I_newPC : in STD_LOGIC_VECTOR (63 downto 0);
 
 		O_pc : out STD_LOGIC_VECTOR (63 downto 0)
 		);
@@ -31,12 +31,12 @@ end process;
 
 process(all)
 begin
-	if(I_setPC = "1") then
+	if(I_setPC = '1') then
 		W_curPC <= I_newPC;
-	elsif(I_pausePC = "1") then
+	elsif(I_pausePC = '1') then
 		W_curPC <= R_oldPC;
 	else
-		W_curPC <= R_oldPC + 4;
+		W_curPC <= STD_LOGIC_VECTOR(unsigned(R_oldPC) + 4);
 	end if;
 
 	O_pc <= W_curPC;

@@ -7,13 +7,13 @@ entity Registers is Port (
 	I_reset : in STD_LOGIC;
 
 	i_we : in STD_LOGIC;
-	I_data : in  STD_LOGIC_VECTOR (31 downto 0);
+	I_data : in  STD_LOGIC_VECTOR (63 downto 0);
 	I_storeAddr : in STD_LOGIC_VECTOR (4 downto 0);
 
 	I_readA : in STD_LOGIC_VECTOR (4 downto 0);
 	I_readB : in STD_LOGIC_VECTOR (4 downto 0);
-	O_dataA : out STD_LOGIC_VECTOR (31 downto 0);
-	O_dataB : out STD_LOGIC_VECTOR (31 downto 0)
+	O_dataA : out STD_LOGIC_VECTOR (63 downto 0);
+	O_dataB : out STD_LOGIC_VECTOR (63 downto 0)
 	);
 end Registers;
 
@@ -35,7 +35,7 @@ process(all)
 begin
 	--Write reg to O_dataA
 	if(i_readA = "00000") then
-		O_dataA <= X"0000000000000000"; --reg 0 is 0
+		O_dataA <= (others => '0'); --reg 0 is 0
 	elsif(I_readA = I_storeAddr) then
 		O_dataA <= I_data;
 	else
@@ -44,7 +44,7 @@ begin
 	
 	--Write reg to O_dataB
 	if(i_readB="00000") then
-		O_dataB <= X"0000000000000000"; --reg 0 is 0
+		O_dataB <= (others => '0'); --reg 0 is 0
 	elsif(I_readB = I_storeAddr) then
 		O_dataB <= I_data;
 	else

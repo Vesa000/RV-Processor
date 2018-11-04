@@ -26,7 +26,8 @@ entity Execute is Port (
 	O_memAddress : out STD_LOGIC_VECTOR (63 downto 0);
 	O_data : out STD_LOGIC_VECTOR (63 downto 0);
 	O_rd : out STD_LOGIC_VECTOR(4 downto 0);
-	O_PC : out STD_LOGIC_VECTOR (63 downto 0)
+	O_PC : out STD_LOGIC_VECTOR (63 downto 0);
+	O_clearFD : out STD_LOGIC
 	);
 end Execute;
 
@@ -46,14 +47,14 @@ signal R_rd : std_logic_vector(4  downto 0);
 
 signal W_setPC: STD_LOGIC;
 signal W_pausePC: STD_LOGIC;
-signal W_newPC: std_logic_vector(63 downto 0);;
+signal W_newPC: std_logic_vector(63 downto 0);
 
 component ProgramCounter Port (
 		I_clk : in STD_LOGIC;
 		I_reset : in STD_LOGIC;
 		I_setPC : in STD_LOGIC;
-		I_newPC : in
-		I_pausePC
+		I_newPC : in std_logic_vector(63 downto 0);
+		I_pausePC:in  STD_LOGIC;
 		O_pc : out STD_LOGIC_VECTOR (63 downto 0)
 		);
 		
@@ -104,6 +105,7 @@ begin
 			W_setPC    <= '0';
 			W_pausePC  <= '0';
 			W_newPC    <= (others => '0');
+			O_clearFD  <= '0';
 			O_data     <= (others => '0');
 
 		when INSTRUCTION_LUI =>
@@ -114,6 +116,7 @@ begin
 			W_setPC    <= '0';
 			W_pausePC  <= '0';
 			W_newPC    <= (others => '0');
+			O_clearFD  <= '0';
 			O_data     <= R_immediate;
 
 		when INSTRUCTION_AUIPC =>
@@ -124,6 +127,7 @@ begin
 			W_setPC    <= '0';
 			W_pausePC  <= '0';
 			W_newPC    <= (others => '0');
+			O_clearFD  <= '0';
 			O_data     <= std_logic_vector(unsigned(R_immediate) + unsigned(R_instAddr));
 
 		when INSTRUCTION_JAL =>
@@ -134,21 +138,158 @@ begin
 			W_setPC    <= '1';
 			W_pausePC  <= '0';
 			W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
+			O_clearFD  <= '1';
 			O_data     <= std_logic_vector(unsigned(R_instAddr) + 4);
 
 		when INSTRUCTION_JALR =>
+			O_StoreReg <= '1';
+			O_rd       <= R_rd;
+			O_StoreMem <= '0';
+			O_MemRead  <= '0';
+			W_setPC    <= '1';
+			W_pausePC  <= '0';
+			W_newPC    <= std_logic_vector(unsigned(R_rs1) + unsigned(R_immediate));
+			W_newPC(0) <= '0';
+			O_clearFD  <= '1';
+			O_data     <= std_logic_vector(unsigned(R_instAddr) + 4);
 
 		when INSTRUCTION_BEQ =>
+			if(R_rs1 = R_rs2) then
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '1';
+				W_pausePC  <= '0';
+				W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
+				O_clearFD  <= '1';
+				O_data     <= (others => '0');
+			else
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '0';
+				W_pausePC  <= '0';
+				W_newPC    <= (others => '0');
+				O_clearFD  <= '0';
+				O_data     <= (others => '0');
+			end if;
 
 		when INSTRUCTION_BNE =>
+			if(R_rs1 /= R_rs2) then
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '1';
+				W_pausePC  <= '0';
+				W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
+				O_clearFD  <= '1';
+				O_data     <= (others => '0');
+			else
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '0';
+				W_pausePC  <= '0';
+				W_newPC    <= (others => '0');
+				O_clearFD  <= '0';
+				O_data     <= (others => '0');
+			end if;
 
 		when INSTRUCTION_BLT =>
+			if(signed(R_rs1) < signed(R_rs2)) then
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '1';
+				W_pausePC  <= '0';
+				W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
+				O_clearFD  <= '1';
+				O_data     <= (others => '0');
+			else
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '0';
+				W_pausePC  <= '0';
+				W_newPC    <= (others => '0');
+				O_clearFD  <= '0';
+				O_data     <= (others => '0');
+			end if;
 
 		when INSTRUCTION_BGE =>
+			if(NOT(signed(R_rs1) < signed(R_rs2))) then
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '1';
+				W_pausePC  <= '0';
+				W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
+				O_clearFD  <= '1';
+				O_data     <= (others => '0');
+			else
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '0';
+				W_pausePC  <= '0';
+				W_newPC    <= (others => '0');
+				O_clearFD  <= '0';
+				O_data     <= (others => '0');
+			end if;
 
 		when INSTRUCTION_BLTU =>
+			if(unsigned(R_rs1) < unsigned(R_rs2)) then
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '1';
+				W_pausePC  <= '0';
+				W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
+				O_clearFD  <= '1';
+				O_data     <= (others => '0');
+			else
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '0';
+				W_pausePC  <= '0';
+				W_newPC    <= (others => '0');
+				O_clearFD  <= '0';
+				O_data     <= (others => '0');
+			end if;
 
 		when INSTRUCTION_BGEU =>
+			if(NOT(unsigned(R_rs1) < unsigned(R_rs2))) then
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '1';
+				W_pausePC  <= '0';
+				W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
+				O_clearFD  <= '1';
+				O_data     <= (others => '0');
+			else
+				O_StoreReg <= '0';
+				O_rd       <= (others => '0');
+				O_StoreMem <= '0';
+				O_MemRead  <= '0';
+				W_setPC    <= '0';
+				W_pausePC  <= '0';
+				W_newPC    <= (others => '0');
+				O_clearFD  <= '0';
+				O_data     <= (others => '0');
+			end if;
 
 		when INSTRUCTION_LB =>
 
@@ -230,12 +371,6 @@ begin
 
 		when INSTRUCTION_SD =>
 
-		when INSTRUCTION_SLLI =>
-
-		when INSTRUCTION_SRLI =>
-
-		when INSTRUCTION_SRAI =>
-
 		when INSTRUCTION_ADDIW =>
 
 		when INSTRUCTION_SLLIW =>
@@ -253,6 +388,8 @@ begin
 		when INSTRUCTION_SRLW =>
 
 		when INSTRUCTION_SRAW =>
+
+		when others =>
 
 	end case;
 
