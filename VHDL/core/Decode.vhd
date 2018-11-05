@@ -103,12 +103,12 @@ begin
 	W_J_immediate(19 downto 12) <= R_instruction(19 downto 12);
 	W_J_immediate(63 downto 20) <= (others => R_instruction(31));
 
-	W_imm_11_0(10 downto 0)  <= R_instruction(BP_IMM_11_0_END-1 downto BP_IMM_11_0_BEGIN);
-	W_imm_11_0(63 downto 11) <= (others => R_instruction(BP_IMM_11_0_END));
+	W_imm_11_0(11 downto 0)  <= R_instruction(BP_IMM_11_0_END downto BP_IMM_11_0_BEGIN);
+	W_imm_11_0(63 downto 12) <= (others => R_instruction(BP_IMM_11_0_END));
 
 	W_imm_31_12(11 downto 0)  <= (others =>'0');
-	W_imm_31_12(30 downto 12) <= R_instruction(BP_IMM_31_12_END-1 downto BP_IMM_31_12_BEGIN);
-	W_imm_31_12(63 downto 31) <= (others => R_instruction(BP_IMM_31_12_END));
+	W_imm_31_12(31 downto 12) <= R_instruction(BP_IMM_31_12_END downto BP_IMM_31_12_BEGIN);
+	W_imm_31_12(63 downto 32) <= (others => R_instruction(BP_IMM_31_12_END));
 
 	O_instData <= R_instruction;
 	O_instAddr <= R_instAddr;
@@ -419,60 +419,141 @@ begin
 			O_instruction <= W_instruction;
 			O_immediate   <= W_B_immediate;
 			O_rd <= W_rd;
-			
+
 		when INSTRUCTION_LB =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_LH =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_LW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_LBU =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_LHU =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SB =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_S_immediate;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SH =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_S_immediate;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_S_immediate;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_ADDI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLTI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLTIU =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_XORI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_ORI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_ANDI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLLI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_shamt;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRLI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_shamt;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRAI =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_shamt;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_ADD =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SUB =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLL =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLT =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLTU =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_XOR =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRL =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRA =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_OR =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_AND =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_FENCE =>
 
@@ -495,29 +576,65 @@ begin
 		when INSTRUCTION_CSRRCI =>
 
 		when INSTRUCTION_LWU =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_LD =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SD =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_S_immediate;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_ADDIW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_imm_11_0;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLLIW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_shamtW;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRLIW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_shamtW;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRAIW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= W_shamtW;
+			O_rd <= W_rd;
 
 		when INSTRUCTION_ADDW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SUBW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SLLW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRLW =>
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
 
 		when INSTRUCTION_SRAW =>
-
+			O_instruction <= W_instruction;
+			O_immediate   <= (others => '0');
+			O_rd <= W_rd;
+			
 		when others =>
 
 	end case;

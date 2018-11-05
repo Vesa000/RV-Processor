@@ -24,7 +24,7 @@ port (
 	doA : out std_logic_vector(7 downto 0);
 	doB : out std_logic_vector(7 downto 0);
 
-	I_strWidth:in std_logic_vector(2 downto 0);
+	I_strWidth:in std_logic_vector(1 downto 0);
 	I_readB: in std_logic;
 	O_rdyB: out std_logic
 	);
@@ -86,6 +86,8 @@ begin
 						ram(to_integer(unsigned(addrB)+5))<= diB(47 downto 40);
 						ram(to_integer(unsigned(addrB)+6))<= diB(55 downto 48);
 						ram(to_integer(unsigned(addrB)+7))<= diB(63 downto 56);
+					when others =>
+						--there should be no other cases
 				end case;
 				if(O_rdyB = '1') then
 					O_rdyB <= '0';
