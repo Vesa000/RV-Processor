@@ -8,11 +8,11 @@ entity IO is Port (
 		I_clk : in STD_LOGIC;
 		I_reset : in STD_LOGIC;
 
-		I_memAddress: in std_logic_vector(31 downto 0);
+		I_memAddress: in std_logic_vector(63 downto 0);
 		I_memStore: in std_logic;
 		I_memRead: in std_logic;
-		I_memStoreData: in std_logic_vector(31 downto 0);
-		O_memReadData: out std_logic_vector(31 downto 0):=(others => '0');
+		I_memStoreData: in std_logic_vector(63 downto 0);
+		O_memReadData: out std_logic_vector(63 downto 0):=(others => '0');
 		
 
 		I_SW0: in std_logic;
@@ -52,8 +52,8 @@ architecture Behavioral of IO is
 
 	signal R_CNTR : STD_LOGIC_VECTOR (31 downto 0) := (others => '0');
 
-	type PWM_Value is array (0 to 31) of STD_LOGIC_VECTOR(31 downto 0);
-    	signal PWM: PWM_Value := (others => X"00000000");
+	type PWM_Value is array (0 to 31) of STD_LOGIC_VECTOR(63 downto 0);
+    	signal PWM: PWM_Value := (others => X"0000000000000000");
     	signal PWM_Out : STD_LOGIC_VECTOR (31 downto 0) := (others => '0');
 
 begin
@@ -65,7 +65,7 @@ begin
 				--reset
 			else
 				-- read switches
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_SWITCHES,32)) and I_memRead = '1') then
+				if(signed(I_memAddress) = MEM_IO_SWITCHES and I_memRead = '1') then
 					O_memReadData(31 downto 4) <= (others => '0');
 					O_memReadData(0) <= I_SW0;
 					O_memReadData(1) <= I_SW1;
@@ -74,7 +74,7 @@ begin
 				end if;
 
 				-- read buttons
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_BUTTONS,32)) and I_memRead = '1') then
+				if(signed(I_memAddress) = MEM_IO_BUTTONS and I_memRead = '1') then
 					O_memReadData(31 downto 4) <= (others => '0');
 					O_memReadData(0) <= I_BTN0;
 					O_memReadData(1) <= I_BTN1;
@@ -83,7 +83,7 @@ begin
 				end if;
 
 				-- write leds
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_LEDS,32))) then
+				if(signed(I_memAddress) = MEM_IO_LEDS) then
 					O_Led0 <= I_memStoreData(0);
 					O_Led1 <= I_memStoreData(1);
 					O_Led2 <= I_memStoreData(2);
@@ -91,40 +91,40 @@ begin
 				end if;
 
 				-- write PWM values
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_0R,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_0R) then
 					PWM(0) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_0G,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_0G) then
 					PWM(1) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_0B,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_0B) then
 					PWM(2) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_1R,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_1R) then
 					PWM(3) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_1G,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_1G) then
 					PWM(4) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_1B,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_1B) then
 					PWM(5) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_2R,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_2R) then
 					PWM(6) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_2G,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_2G) then
 					PWM(7) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_2B,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_2B) then
 					PWM(8) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_3R,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_3R) then
 					PWM(9) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_3G,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_3G) then
 					PWM(10) <= I_memStoreData;
 				end if;
-				if(I_memAddress = std_logic_vector(to_unsigned(MEM_IO_RGB_3B,32))) then
+				if(signed(I_memAddress) = MEM_IO_RGB_3B) then
 					PWM(11) <= I_memStoreData;
 				end if;
 

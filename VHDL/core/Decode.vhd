@@ -20,8 +20,9 @@ entity Decode is Port (
 		O_read1 : out STD_LOGIC_VECTOR (4 downto 0);
 		O_read2 : out STD_LOGIC_VECTOR (4 downto 0);
 
-		I_execute : in STD_LOGIC;
+		I_pause : in STD_LOGIC;
 		I_clear : in STD_LOGIC;
+		I_execute : in STD_LOGIC;
 		O_execute : out STD_LOGIC
 		);
 end Decode;
@@ -29,8 +30,6 @@ end Decode;
 architecture Behavioral of Decode is
 
 signal R_instruction: STD_LOGIC_VECTOR (31 downto 0);
-signal R_instAddr: std_logic_vector(63 downto 0);
-signal R_instData: std_logic_vector(31 downto 0);
 signal W_instruction: integer;
 
 signal R_execute: STD_LOGIC;
@@ -42,38 +41,51 @@ signal W_funct3:      std_logic_vector(2  downto 0);
 signal W_funct7:      std_logic_vector(6  downto 0);
 signal W_funct6:      std_logic_vector(5  downto 0);
 signal W_rd:          std_logic_vector(4  downto 0);
-signal W_shamt:       std_logic_vector(4  downto 0);
-signal W_shamtw:      std_logic_vector(3  downto 0);
+signal W_shamt:       std_logic_vector(63 downto 0);
+signal W_shamtw:      std_logic_vector(63 downto 0);
 
-signal W_I_immediate: std_logic_vector(63  downto 0);
-signal W_S_immediate: std_logic_vector(63  downto 0);
-signal W_B_immediate: std_logic_vector(63  downto 0);
-signal W_U_immediate: std_logic_vector(63  downto 0);
-signal W_J_immediate: std_logic_vector(63  downto 0);
+signal W_I_immediate: std_logic_vector(63 downto 0);
+signal W_S_immediate: std_logic_vector(63 downto 0);
+signal W_B_immediate: std_logic_vector(63 downto 0);
+signal W_U_immediate: std_logic_vector(63 downto 0);
+signal W_J_immediate: std_logic_vector(63 downto 0);
 
-signal W_imm_11_0: std_logic_vector(63  downto 0);
-signal W_imm_31_12: std_logic_vector(63  downto 0);
+signal W_imm_11_0:    std_logic_vector(63 downto 0);
+signal W_imm_31_12:   std_logic_vector(63 downto 0);
 
 begin
 process(all)
 begin
 	if(rising_edge(I_clk)) then
-		R_instruction <= I_instruction;
-		R_execute <= I_execute;
+		if(NOT I_pause) then
+			R_instruction <= I_instruction;
+			R_execute     <= I_execute;
+			O_instAddr    <= I_instAddr;
+		end if;
 	end if;
 end process;
 
 process(all)
 begin
-	W_opcode      <= R_instruction(BP_OPCODE_END downto BP_OPCODE_BEGIN);
-	W_rs2         <= R_instruction(BP_RS2_END downto BP_RS2_BEGIN);
-	W_rs1         <= R_instruction(BP_RS1_END downto BP_RS1_BEGIN);
-	W_funct7      <= R_instruction(BP_FUNCT7_END downto BP_FUNCT7_BEGIN);
-	W_funct6      <= R_instruction(BP_FUNCT6_END downto BP_FUNCT6_BEGIN);
-	W_funct3      <= R_instruction(BP_FUNCT3_END downto BP_FUNCT3_BEGIN);
-	W_rd          <= R_instruction(BP_RD_END downto BP_RD_BEGIN);
-	W_shamt       <= R_instruction(BP_SHAMT_END downto BP_SHAMT_BEGIN);
-	W_shamtW      <= R_instruction(BP_SHAMTW_END downto BP_SHAMTW_BEGIN);
+	if(I_clear OR I_reset) then
+		O_execute <= '0';
+	else
+		O_execute <= R_execute;
+	end if;
+	O_instData <= R_instruction;
+
+	W_opcode <= R_instruction(BP_OPCODE_END downto BP_OPCODE_BEGIN);
+	W_rs2    <= R_instruction(BP_RS2_END downto BP_RS2_BEGIN);
+	W_rs1    <= R_instruction(BP_RS1_END downto BP_RS1_BEGIN);
+	W_funct7 <= R_instruction(BP_FUNCT7_END downto BP_FUNCT7_BEGIN);
+	W_funct6 <= R_instruction(BP_FUNCT6_END downto BP_FUNCT6_BEGIN);
+	W_funct3 <= R_instruction(BP_FUNCT3_END downto BP_FUNCT3_BEGIN);
+	W_rd     <= R_instruction(BP_RD_END downto BP_RD_BEGIN);
+
+	W_shamt (4  downto 0) <= R_instruction(BP_SHAMT_END downto BP_SHAMT_BEGIN);
+	W_shamt (63 downto 5) <= (others => W_shamt(4));
+	W_shamtW(3  downto 0) <= R_instruction(BP_SHAMTW_END downto BP_SHAMTW_BEGIN);
+	W_shamtW(63 downto 4) <= (others => W_shamtW(3));
 
 	W_I_immediate(0)            <= R_instruction(20);
 	W_I_immediate(4 downto 1)   <= R_instruction(24 downto 21);
@@ -103,18 +115,12 @@ begin
 	W_J_immediate(19 downto 12) <= R_instruction(19 downto 12);
 	W_J_immediate(63 downto 20) <= (others => R_instruction(31));
 
-	W_imm_11_0(11 downto 0)  <= R_instruction(BP_IMM_11_0_END downto BP_IMM_11_0_BEGIN);
-	W_imm_11_0(63 downto 12) <= (others => R_instruction(BP_IMM_11_0_END));
+	W_imm_11_0(11 downto 0)     <= R_instruction(BP_IMM_11_0_END downto BP_IMM_11_0_BEGIN);
+	W_imm_11_0(63 downto 12)    <= (others => R_instruction(BP_IMM_11_0_END));
 
-	W_imm_31_12(11 downto 0)  <= (others =>'0');
-	W_imm_31_12(31 downto 12) <= R_instruction(BP_IMM_31_12_END downto BP_IMM_31_12_BEGIN);
-	W_imm_31_12(63 downto 32) <= (others => R_instruction(BP_IMM_31_12_END));
-
-	O_instData <= R_instruction;
-	O_instAddr <= R_instAddr;
-	O_instData <= R_instData;
-
-	O_execute <= R_execute and not I_clear;
+	W_imm_31_12(11 downto 0)    <= (others =>'0');
+	W_imm_31_12(31 downto 12)   <= R_instruction(BP_IMM_31_12_END downto BP_IMM_31_12_BEGIN);
+	W_imm_31_12(63 downto 32)   <= (others => R_instruction(BP_IMM_31_12_END));
 
 
 	-- get instruction from opcode and funct3
@@ -634,7 +640,7 @@ begin
 			O_instruction <= W_instruction;
 			O_immediate   <= (others => '0');
 			O_rd <= W_rd;
-			
+
 		when others =>
 
 	end case;

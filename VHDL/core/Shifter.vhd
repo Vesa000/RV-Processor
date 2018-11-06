@@ -4,11 +4,11 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity barrelshifter is port (
         I_dIn        : in std_logic_vector(63 downto 0);
-        I_shift      : in std_logic_vector(63 downto 0);
+        I_shift      : in std_logic_vector(4  downto 0);
 
         O_leftArith  : out std_logic_vector(63 downto 0);
         O_rightArith : out std_logic_vector(63 downto 0);
-        
+
         O_leftLogic  : out std_logic_vector(63 downto 0);
         O_rightLogic : out std_logic_vector(63 downto 0)
         );
@@ -31,6 +31,7 @@ begin
         O_leftLogic(I) <= '0';
         O_rightLogic(63-I) <= '0';
       else
+        O_leftLogic(I) <= O_leftLogic(I);
         O_rightLogic(63-I) <= O_rightArith(I);
       end if;
     end loop;

@@ -9,8 +9,8 @@ entity BlockRam is
 generic (
 	WIDTHA : integer := 32;
 	WIDTHB : integer := 64;
-	SIZE : integer := 4000
-	--SIZEA : integer := 40000
+	SIZE : integer := 400
+	--SIZE : integer := 40000
 	);
 
 port (
@@ -21,11 +21,10 @@ port (
 	addrA : in std_logic_vector(63 downto 0);
 	addrB : in std_logic_vector(63 downto 0);
 	diB : in std_logic_vector(63 downto 0);
-	doA : out std_logic_vector(7 downto 0);
-	doB : out std_logic_vector(7 downto 0);
+	doA : out std_logic_vector(31 downto 0);
+	doB : out std_logic_vector(63 downto 0);
 
 	I_strWidth:in std_logic_vector(1 downto 0);
-	I_readB: in std_logic;
 	O_rdyB: out std_logic
 	);
 end BlockRam;
@@ -56,14 +55,17 @@ begin
 
 process (all)
 begin
-	if rising_edge(clk) then
-		if enA = '1' then
-			regA(7  downto 0)  <= ram(to_integer(unsigned(addrA)+0));
-			regA(15 downto 8)  <= ram(to_integer(unsigned(addrA)+1));
-			regA(23 downto 16) <= ram(to_integer(unsigned(addrA)+2));
-			regA(31 downto 24) <= ram(to_integer(unsigned(addrA)+3));
-		end if;
+	if enA = '1' then
+		regA(7  downto 0)  <= ram(to_integer(unsigned(addrA)+0));
+		regA(15 downto 8)  <= ram(to_integer(unsigned(addrA)+1));
+		regA(23 downto 16) <= ram(to_integer(unsigned(addrA)+2));
+		regA(31 downto 24) <= ram(to_integer(unsigned(addrA)+3));
+	end if;
+end process;
 
+process (all)
+begin
+	if rising_edge(clk) then
 		if enB = '1' then
 			if (weB = '1') then
 				case(I_strWidth) is
@@ -107,6 +109,12 @@ begin
 			regB(63 downto 56) <= ram(to_integer(unsigned(addrB)+7));
 		end if;
 	end if;
+end process;
+
+process(all)
+begin
+	doA <= regA;
+	doB <= regB;
 end process;
 end behavioral;
 

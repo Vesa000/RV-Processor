@@ -22,12 +22,9 @@ end Fetch;
 
 architecture Behavioral of Fetch is
 
-signal W_instruction: STD_LOGIC;
-signal W_opcode:      std_logic_vector(6  downto 0);
-
 begin
 
---register process
+
 process(all)
 begin
 	if(rising_edge(I_clk)) then
@@ -40,7 +37,7 @@ end process;
 
 process(all)
 begin
-	O_execute <= NOT I_clear;
+	O_execute <= NOT (I_clear OR I_reset);
 
 end process;
 end Behavioral;

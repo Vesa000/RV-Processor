@@ -12,11 +12,11 @@ entity Uart is Port (
 		O_tx : out STD_LOGIC;
 		I_rx : in STD_LOGIC;
 
-		I_memAddress: in std_logic_vector(31 downto 0);
+		I_memAddress: in std_logic_vector(63 downto 0);
 		I_memStore: in std_logic;
 		I_memRead: in std_logic;
-		I_memStoreData: in std_logic_vector(31 downto 0);
-		O_memReadData: out std_logic_vector(31 downto 0):=(others => '0')
+		I_memStoreData: in std_logic_vector(63 downto 0);
+		O_memReadData: out std_logic_vector(63 downto 0)
 		);
 end Uart;
 
@@ -57,9 +57,9 @@ begin
 		if(rising_edge(I_clk)) then
 
 			--read Status
-			if(I_memAddress = std_logic_vector(to_unsigned(MEM_UART_STATUS,32)) and I_memRead = '1') then
+			if(I_memAddress = std_logic_vector(to_unsigned(MEM_UART_STATUS,64)) and I_memRead = '1') then
 
-				O_memReadData(31 downto 2) <= (others => '0');
+				O_memReadData <= (others => '0');
 				O_memReadData(UART_AVAILABLE_BIT) <= rx_sig;
 				if(R_txSend = '1') then
 					O_memReadData(UART_TXRDY_BIT) <= '0';
@@ -71,7 +71,7 @@ begin
 			end if;
 
 			--read next
-			if(I_memAddress = std_logic_vector(to_unsigned(MEM_UART_DATA,32)) and I_memRead = '1') then
+			if(I_memAddress = std_logic_vector(to_unsigned(MEM_UART_DATA,64)) and I_memRead = '1') then
 				R_rxNext <='1';
 				O_memReadData(7 downto 0) <= R_rxData;
 			else
@@ -79,7 +79,7 @@ begin
 			end if;
 
 			--send
-			if(I_memAddress = std_logic_vector(to_unsigned(MEM_UART_DATA,32)) and I_memStore = '1') then
+			if(I_memAddress = std_logic_vector(to_unsigned(MEM_UART_DATA,64)) and I_memStore = '1') then
 				R_txSend <='1';
 				R_txData <= I_memStoreData(7 downto 0);
 			end if;
