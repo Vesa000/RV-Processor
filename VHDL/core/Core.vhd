@@ -14,7 +14,7 @@ entity Core is Port (
 		--memory
 		O_memAddress: out std_logic_vector(63 downto 0);
 		O_memStoreData : out std_logic_vector(63 downto 0);
-		O_memStoreWidth : out std_logic_vector(1 downto 0);
+		O_memWidth : out std_logic_vector(1 downto 0);
 		O_memRead : out STD_LOGIC;
 		O_memStore : out STD_LOGIC;
 		I_memReadData : in STD_LOGIC_VECTOR (63 downto 0);
@@ -98,7 +98,7 @@ component Execute port(
 		I_memData : in STD_LOGIC_VECTOR (63 downto 0);
 		O_StoreReg : out STD_LOGIC;
 		O_StoreMem : out STD_LOGIC;
-		O_strWidth : out STD_LOGIC_VECTOR (1 downto 0);
+		O_memWidth : out STD_LOGIC_VECTOR (1 downto 0);
 		O_MemRead : out STD_LOGIC;
 		O_memAddr : out STD_LOGIC_VECTOR (63 downto 0);
 		O_data : out STD_LOGIC_VECTOR (63 downto 0);
@@ -181,7 +181,7 @@ ExecuteStage: Execute port map(
 		I_memData     => I_memReadData,
 		O_StoreReg    => W_EWB_store,
 		O_StoreMem    => O_memStore,
-		O_strWidth    => O_memStoreWidth,
+		O_memWidth    => O_memWidth,
 		O_MemRead     => O_memRead,
 		O_memAddr     => O_memAddress,
 		O_data        => W_EXE_Data,

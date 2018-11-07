@@ -25,7 +25,7 @@ entity Execute is Port (
 
 	O_StoreReg : out STD_LOGIC;
 	O_StoreMem : out STD_LOGIC;
-	O_strWidth : out STD_LOGIC_VECTOR (1 downto 0);
+	O_memWidth : out STD_LOGIC_VECTOR (1 downto 0);
 	O_MemRead : out STD_LOGIC;
 	O_memAddr : out STD_LOGIC_VECTOR (63 downto 0);
 	O_data : out STD_LOGIC_VECTOR (63 downto 0);
@@ -128,7 +128,7 @@ begin
 		O_StoreMem <= '0';
 		O_MemRead  <= '0';
 		O_memAddr  <= (others => '0');
-		O_strWidth <= "00";
+		O_memWidth <= "00";
 		W_setPC    <= '1';
 		W_pausePC  <= '0';
 		W_newPC    <= std_logic_vector(to_signed(MEM_PROG_START,64));
@@ -137,14 +137,14 @@ begin
 		O_data     <= (others => '0');
 	else
 		case R_instruction is
-/*
+
 			when INSTRUCTION_NOP =>
 				O_StoreReg <= '0';
 				O_rd       <= (others => '0');
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -158,7 +158,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -172,7 +172,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -186,7 +186,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '1';
 				W_pausePC  <= '0';
 				W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
@@ -200,7 +200,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '1';
 				W_pausePC  <= '0';
 				W_newPC    <= std_logic_vector(unsigned(R_rs1) + unsigned(R_immediate));
@@ -216,7 +216,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '1';
 					W_pausePC  <= '0';
 					W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
@@ -229,7 +229,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -245,7 +245,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '1';
 					W_pausePC  <= '0';
 					W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
@@ -258,7 +258,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -274,7 +274,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '1';
 					W_pausePC  <= '0';
 					W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
@@ -287,7 +287,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -303,7 +303,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '1';
 					W_pausePC  <= '0';
 					W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
@@ -316,7 +316,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -332,7 +332,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '1';
 					W_pausePC  <= '0';
 					W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
@@ -345,7 +345,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -361,7 +361,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '1';
 					W_pausePC  <= '0';
 					W_newPC    <= std_logic_vector(unsigned(R_instAddr) + unsigned(R_immediate));
@@ -374,7 +374,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -390,7 +390,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '1';
 					O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '1';
 					W_newPC    <= (others => '0');
@@ -403,7 +403,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -420,7 +420,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '1';
 					O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '1';
 					W_newPC    <= (others => '0');
@@ -433,7 +433,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -450,7 +450,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '1';
 					O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '1';
 					W_newPC    <= (others => '0');
@@ -463,7 +463,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -480,7 +480,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '1';
 					O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '1';
 					W_newPC    <= (others => '0');
@@ -493,7 +493,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -510,7 +510,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '1';
 					O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '1';
 					W_newPC    <= (others => '0');
@@ -523,7 +523,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -539,7 +539,7 @@ begin
 				O_StoreMem <= '1';
 				O_MemRead  <= '0';
 				O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -553,35 +553,35 @@ begin
 				O_StoreMem <= '1';
 				O_MemRead  <= '0';
 				O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-				O_strWidth <= "01";
+				O_memWidth <= "01";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
 				O_clearFD  <= '0';
 				O_pauseFD  <= '0';
 				O_data     <= I_rs2;
-*/
+
 			when INSTRUCTION_SW =>
 				O_StoreReg <= '0';
 				O_rd       <= (others => '0');
 				O_StoreMem <= '1';
 				O_MemRead  <= '0';
 				O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-				O_strWidth <= "10";
+				O_memWidth <= "10";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
 				O_clearFD  <= '0';
 				O_pauseFD  <= '0';
 				O_data     <= I_rs2;
-/*				
+			
 			when INSTRUCTION_ADDI =>
 				O_StoreReg <= '1';
 				O_rd       <= R_rd;
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -595,7 +595,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -614,7 +614,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -633,7 +633,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -647,7 +647,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -661,7 +661,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -675,7 +675,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -691,7 +691,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -707,7 +707,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -723,7 +723,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -737,7 +737,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -751,7 +751,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -767,7 +767,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -786,7 +786,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -805,7 +805,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -819,7 +819,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -835,7 +835,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -851,7 +851,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -865,7 +865,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -900,7 +900,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '1';
 					O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '1';
 					W_newPC    <= (others => '0');
@@ -913,7 +913,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -930,7 +930,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '1';
 					O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '1';
 					W_newPC    <= (others => '0');
@@ -943,7 +943,7 @@ begin
 					O_StoreMem <= '0';
 					O_MemRead  <= '0';
 					O_memAddr  <= (others => '0');
-					O_strWidth <= "00";
+					O_memWidth <= "00";
 					W_setPC    <= '0';
 					W_pausePC  <= '0';
 					W_newPC    <= (others => '0');
@@ -958,7 +958,7 @@ begin
 				O_StoreMem <= '1';
 				O_MemRead  <= '0';
 				O_memAddr  <= std_logic_vector(signed(R_rs1) + signed(R_immediate));
-				O_strWidth <= "11";
+				O_memWidth <= "11";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -972,7 +972,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -987,7 +987,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1004,7 +1004,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1021,7 +1021,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1038,7 +1038,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1053,7 +1053,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1068,7 +1068,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1085,7 +1085,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1102,7 +1102,7 @@ begin
 				O_StoreMem <= '0';
 				O_MemRead  <= '0';
 				O_memAddr  <= (others => '0');
-				O_strWidth <= "00";
+				O_memWidth <= "00";
 				W_setPC    <= '0';
 				W_pausePC  <= '0';
 				W_newPC    <= (others => '0');
@@ -1112,7 +1112,7 @@ begin
 				W_shift(4 downto 0)<= R_rs2(4 downto 0);
 				O_data      <= W_shiftRightArith;
 				O_data(63 downto 32) <= (others => W_shiftRightArith(31));
-*/
+
 			when others =>
 
 		end case;

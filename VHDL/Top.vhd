@@ -6,7 +6,7 @@ use work.cpu_constants.all;
 
 entity Top is Port ( 
 		I_clk : in STD_LOGIC;
-		I_reset : in STD_LOGIC;
+		I_RST : in STD_LOGIC;
 		--Uart
 		O_uart_tx : out STD_LOGIC;
 		I_uart_rx : in STD_LOGIC;
@@ -40,13 +40,16 @@ end Top;
 
 architecture Behavioral of Top is
 
+signal C_clk0: STD_LOGIC;
+signal W_Reset:STD_LOGIC;
+
 signal W_pc: std_logic_vector(63 downto 0);
 signal W_instruction: std_logic_vector(31 downto 0);
 
 
 --MemoryMap
 signal W_mm_store: STD_LOGIC;
-signal W_mm_storeWidth : STD_LOGIC_VECTOR (1 downto 0);
+signal W_mm_Width : STD_LOGIC_VECTOR (1 downto 0);
 signal W_mm_load : STD_LOGIC;
 signal W_mm_address : STD_LOGIC_VECTOR (63 downto 0);
 signal W_mm_Idata : STD_LOGIC_VECTOR (63 downto 0);
@@ -56,7 +59,7 @@ signal W_mm_Odata : STD_LOGIC_VECTOR (63 downto 0);
 signal W_MemLoadRdy : STD_LOGIC;
 signal W_MemLoadData : STD_LOGIC_VECTOR (63 downto 0);
 signal W_MemStore : STD_LOGIC;
-signal W_MemstoreWidth : STD_LOGIC_VECTOR (1 downto 0);
+signal W_MemWidth : STD_LOGIC_VECTOR (1 downto 0);
 signal W_MemLoad : STD_LOGIC;
 signal W_MemAddress : STD_LOGIC_VECTOR (63 downto 0);
 signal W_MemStoreData : STD_LOGIC_VECTOR (63 downto 0);
@@ -64,7 +67,7 @@ signal W_MemStoreData : STD_LOGIC_VECTOR (63 downto 0);
 signal W_IOLoadRdy : STD_LOGIC;
 signal W_IOLoadData : STD_LOGIC_VECTOR (63 downto 0);
 signal W_IOStore : STD_LOGIC;
-signal W_IOstoreWidth : STD_LOGIC_VECTOR (1 downto 0);
+signal W_IOWidth : STD_LOGIC_VECTOR (1 downto 0);
 signal W_IOLoad : STD_LOGIC;
 signal W_IOAddress : STD_LOGIC_VECTOR (63 downto 0);
 signal W_IOStoreData : STD_LOGIC_VECTOR (63 downto 0);
@@ -72,10 +75,19 @@ signal W_IOStoreData : STD_LOGIC_VECTOR (63 downto 0);
 signal W_UartLoadRdy : STD_LOGIC;
 signal W_UartLoadData : STD_LOGIC_VECTOR (63 downto 0);
 signal W_UartStore : STD_LOGIC;
-signal W_UartstoreWidth : STD_LOGIC_VECTOR (1 downto 0);
+signal W_UartWidth : STD_LOGIC_VECTOR (1 downto 0);
 signal W_UartLoad : STD_LOGIC;
 signal W_UartAddress : STD_LOGIC_VECTOR (63 downto 0);
 signal W_UartStoreData : STD_LOGIC_VECTOR (63 downto 0);
+
+
+component clk_wiz_0 port(
+		-- Clock out ports
+  		clk_out1: out STD_LOGIC;
+ 		-- Clock in ports
+  		clk_in1: in STD_LOGIC
+ 		);
+end component;
 
 component Core port(
 		I_clk : in STD_LOGIC;
@@ -84,7 +96,7 @@ component Core port(
 		I_instruction : in std_logic_vector(31 downto 0);
 		O_memAddress: out std_logic_vector(63 downto 0);
 		O_memStoreData : out std_logic_vector(63 downto 0);
-		O_memStoreWidth : out std_logic_vector(1 downto 0);
+		O_memWidth : out std_logic_vector(1 downto 0);
 		O_memRead : out STD_LOGIC;
 		O_memStore : out STD_LOGIC;
 		I_memReadData : in STD_LOGIC_VECTOR (63 downto 0);
@@ -139,7 +151,9 @@ component BlockRam port(
 		diB : in  std_logic_vector(63 downto 0);
 		doA : out std_logic_vector(31 downto 0);
 		doB : out std_logic_vector(63 downto 0);
-		I_strWidth: in std_logic_vector(1 downto 0);
+		I_read : in std_logic;
+		I_store : in std_logic;
+		I_dataWidth: in std_logic_vector(1 downto 0);
 		O_rdyB : out std_logic
 		);
 end component;
@@ -197,14 +211,19 @@ end component;
 
 begin
 
+Clocks: clk_wiz_0 port map(
+		clk_out1 => C_clk0, 
+		clk_in1  => I_clk
+		);
+
 ProcessorCore: Core port map(
-		I_clk           => I_clk, 
-		I_reset         => I_reset,
+		I_clk           => C_clk0, 
+		I_reset         => W_Reset,
 		O_pc            => W_pc,
 		I_instruction   => W_instruction,
 		O_memAddress    => W_mm_address,
 		O_memStoreData  => W_mm_Idata,
-		O_memStoreWidth => W_mm_storeWidth,
+		O_memWidth      => W_mm_Width,
 		O_memRead       => W_mm_load,
 		O_memStore      => W_mm_store,
 		I_memReadData   => W_mm_Odata,
@@ -213,7 +232,7 @@ ProcessorCore: Core port map(
 
 MemoryMap: MemoryMapper port map(
 		I_store         => W_mm_store,
-		I_storeWidth    => W_mm_storeWidth,
+		I_storeWidth    => W_mm_Width,
 		I_load          => W_mm_load,
 		I_address       => W_mm_address,
 		I_data          => W_mm_Idata,
@@ -222,28 +241,28 @@ MemoryMap: MemoryMapper port map(
 		I_MemLoadRdy    => W_MemLoadRdy,
 		I_MemLoadData   => W_MemLoadData,
 		O_MemStore      => W_memStore,
-		O_MemstoreWidth => W_MemstoreWidth,
+		O_MemstoreWidth => W_MemWidth,
 		O_MemLoad       => W_MemLoad,
 		O_MemAddress    => W_memAddress,
 		O_MemStoreData  => W_memStoreData,
 		I_IOLoadRdy     => W_IOLoadRdy,
 		I_IOLoadData    => W_IOLoadData,
 		O_IOStore       => W_IOStore,
-		O_IOstoreWidth  => W_IOstoreWidth,
+		O_IOstoreWidth  => W_IOWidth,
 		O_IOLoad        => W_IOLoad,
 		O_IOAddress     => W_IOAddress,
 		O_IOStoreData   => W_IOStoreData,
 		I_UartLoadRdy   => W_UartLoadRdy,
 		I_UartLoadData  => W_UartLoadData,
 		O_UartStore     => W_UartStore,
-		O_UartstoreWidth=> W_UartstoreWidth,
+		O_UartstoreWidth=> W_UartWidth,
 		O_UartLoad      => W_UartLoad,
 		O_UartAddress   => W_UartAddress,
 		O_UartStoreData => W_UartStoreData
 		);
 
 Bram: BlockRam port map(
-		clk => I_clk,
+		clk => C_clk0,
 		enA => '1',
 		enB => '1',
 		weB => W_memStore,
@@ -252,14 +271,16 @@ Bram: BlockRam port map(
 		diB => W_memStoreData, 
 		doA => W_instruction, 
 		doB => W_MemLoadData,
-		I_strWidth => W_MemstoreWidth,
+		I_read => W_MemLoad,
+		I_store => W_memStore,
+		I_dataWidth => W_MemWidth,
 		O_rdyB => W_MemLoadRdy
 		);
 
 UartComponent: Uart Port map(
-		I_clk 		   => I_clk,
-		I_baudcount    => "00001010001011000", --19200MHz
-		I_reset 	   => I_reset,
+		I_clk 		   => C_clk0,
+		I_baudcount    	   => "00000101000101100", --19200MHz  --Clock freq / Baud
+		I_reset 	   => W_Reset,
 		O_tx 		   => O_uart_tx,
 		I_rx 		   => I_uart_rx,
 		I_memAddress   => W_UartAddress,
@@ -270,8 +291,8 @@ UartComponent: Uart Port map(
 		);
 
 IOcomponent: IO port map(
-		I_clk          => I_clk,
-		I_reset        => '0',
+		I_clk          => C_clk0,
+		I_reset        => W_Reset,
 		I_memAddress   => W_IOAddress,
 		I_memStore     => W_IOStore,
 		I_memRead      => W_IOLoad,
@@ -305,6 +326,7 @@ IOcomponent: IO port map(
 
 process(all)
 begin
+	W_Reset <= NOT I_RST;
 
 end process;
 end Behavioral;

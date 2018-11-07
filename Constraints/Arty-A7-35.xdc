@@ -3,6 +3,9 @@
 ## - uncomment the lines corresponding to used pins
 ## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
+set_property CONFIG_VOLTAGE 3.3 [current_design]
+set_property CFGBVS VCCO [current_design]
+
 ## Clock signal
 set_property -dict {PACKAGE_PIN E3 IOSTANDARD LVCMOS33} [get_ports I_clk]
 create_clock -period 10.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports I_clk]
@@ -175,7 +178,7 @@ set_property -dict {PACKAGE_PIN A9 IOSTANDARD LVCMOS33} [get_ports I_uart_rx]
 
 ## Misc. ChipKit Ports
 #set_property -dict { PACKAGE_PIN M17   IOSTANDARD LVCMOS33 } [get_ports { ck_ioa }]; #IO_L10N_T1_D15_14 Sch=ck_ioa
-#set_property -dict { PACKAGE_PIN C2    IOSTANDARD LVCMOS33 } [get_ports { ck_rst }]; #IO_L16P_T2_35 Sch=ck_rst
+set_property -dict { PACKAGE_PIN C2    IOSTANDARD LVCMOS33 } [get_ports { I_RST }]; #IO_L16P_T2_35 Sch=ck_rst
 
 ## SMSC Ethernet PHY
 #set_property -dict { PACKAGE_PIN D17   IOSTANDARD LVCMOS33 } [get_ports { eth_col }]; #IO_L16N_T2_A27_15 Sch=eth_col
